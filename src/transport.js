@@ -129,11 +129,15 @@ class TransportManager {
 
     // Until TCP can handle distinct addresses on listen, https://github.com/libp2p/interface-transport/issues/41,
     // make sure we aren't trying to listen on duplicate ports. This also applies to websockets.
-    originalAddrs = uniqueBy(originalAddrs, (addr) => {
-      // Any non 0 port should register as unique
-      const port = Number(addr.toOptions().port)
-      return isNaN(port) || port === 0 ? addr.toString() : port
-    })
+    originalAddrs = originalAddrs
+      .filter(ma => ma.toOptions().transport !== 'tcp')
+      .concat(
+          ...uniqueBy(originalAddrs.filter(ma => ma.toOptions().transport === 'tcp'), addr => {
+              // Any non 0 port should register as unique
+              const port = Number(addr.toOptions().port)
+              return isNaN(port) || port === 0 ? addr.toString() : port
+          })
+    )
 
     const multiaddrs = TransportManager.dialables(transport, originalAddrs)
 
