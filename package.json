@@ -74,7 +74,7 @@
     "multiaddr": "^6.1.0",
     "multistream-select": "~0.14.6",
     "once": "^1.4.0",
-    "peer-id": "~0.12.2",
+    "peer-id": "~0.12.3",
     "peer-info": "~0.15.1",
     "pull-stream": "^3.6.13",
     "retimer": "^2.0.0"
